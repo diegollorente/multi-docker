@@ -9,7 +9,8 @@ before_install:
 
 script:
   # no hace falta clavarle el -- --coverage al final para que salga el travis
-  - docker run diegollorente/multi-docker-react-tests npm run testCI
+  #- docker run diegollorente/multi-docker-react-tests npm run testCI
+  - docker run diegollorente/multi-docker-react-tests npm test -- --coverage
 
 after_success:
   - docker build -t diegollorente/multi-docker-nginx ./nginx
