@@ -1,0 +1,100 @@
+version: '3'
+services:
+    postgres:
+      image: 'postgres:alpine'
+      restart: always
+    redis:
+      image: 'redis:alpine'
+      restart: always
+    nginx:
+      image: 'nginx:alpine'
+      restart: always
+    mariadb:
+      image: 'mariadb:latest'
+      restart: always
+      environment:
+        - ALLOW_EMPTY_PASSWORD=yes
+        - MARIADB_ROOT_USER=root
+        - MARIADB_ROOT_PASSWORD=mariadb_rootpassword
+        - MARIADB_DATABASE=mariadb
+        - MARIADB_USER=mariadb
+        - MARIADB_PASSWORD=mariadb_password
+        - MYSQL_ROOT_USER=root
+        - MYSQL_ROOT_PASSWORD=mariadb_rootpassword
+        - MYSQL_DATABASE=mariadb
+        - MYSQL_USER=mariadb
+        - MYSQL_PASSWORD=mariadb_password
+        ALLOW_EMPTY_PASSWORD: 'yes'
+        MARIADB_ROOT_USER: root
+        MARIADB_ROOT_PASSWORD: mariadb_rootpassword
+        MARIADB_DATABASE: mariadb
+        MARIADB_USER: mariadb
+        MARIADB_PASSWORD: mariadb_password
+        MYSQL_ROOT_USER: root
+        MYSQL_ROOT_PASSWORD: mariadb_rootpassword
+        MYSQL_DATABASE: mariadb
+        MYSQL_USER: mariadb
+        MYSQL_PASSWORD:
+        - ALLOW_EMPTY_PASSWORD=yes
+        - MARIADB_ROOT_USER=root
+        - MARIADB_ROOT_PASSWORD=mariadb_rootpassword
+        - MARIADB_DATABASE=mariadb
+        - MARIADB_USER=mariadb
+        - MARIADB_PASSWORD=mariadb_password
+        - MYSQL_ROOT_USER=root
+        - MYSQL_ROOT_PASSWORD=mariadb_rootpassword
+        - MYSQL_DATABASE=mariadb
+        - MYSQL_USER=mariadb
+        - MYSQL_PASSWORD=mariadb_password
+        ALLOW_EMPTY_PASSWORD: 'yes'
+        MARIADB_ROOT_USER: root
+        MARIADB_ROOT_PASSWORD: 
+        MARIADB_DATABASE: mariadb
+        MARIADB_USER: mariadb
+        MARIADB_PASSWORD: 
+        MYSQL_ROOT_USER: root
+        MYSQL_ROOT_PASSWORD: 
+        MYSQL_DATABASE: mariadb
+        MYSQL_USER: mariadb
+        MYSQL_PASSWORD:
+    server:
+      build:
+        dockerfile: Dockerfile.dev
+        context: ./server
+      volumes:
+        #Don't touch /app/node_modules
+        - /app/node_modules       
+        #Sinchronyze server to app
+        - ./server:/app
+      environment:
+        - REDIS_HOST=redis
+        - REDIS_PORT=6379
+        - PGUSER=postgres
+        - PGHOST=postgres
+        - PGDATABASE=postgres
+        - PGPASSWORD=postgres_password
+        - PGPORT=5432
+        - MARIADBDATABASE=mariadb
+        - MARIADBUSER=mariadb
+        - MARIADBDPASSWORD=mariadb_password
+        - MARIADBHOST=mariadb
+        - MARIADBPORT=3306
+        - MARIADCONNECTIONLIMIT=5
+    client:
+      build:
+        dockerfile: Dockerfile.dev
+        context: ./client_mio
+      volumes:
+        #Don't touch /app/node_modules
+        - /app/node_modules       
+        #Sinchronyze server to app
+        - ./client_mio:/app
+    worker:
+      build:
+        dockerfile: Dockerfile.dev
+        context: ./worker
+      volumes:
+        #Don't touch /app/node_modules
+        - /app/node_modules       
+        #Sinchronyze server to app
+        - ./worker:/app
