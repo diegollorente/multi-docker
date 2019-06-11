@@ -1,0 +1,25 @@
+#We require root permissions in order to run docker containers
+sudo: required
+# we define the list of services that should be started
+services: 
+  - docker
+#commands to be executed before run our tests
+before_install:
+  - docker build -t diegollorente/multi-docker-react-tests -f ./client/Dockerfile.dev ./client
+
+script:
+  # no hace falta clavarle el -- --coverage al final para que salga el travis
+  - docker run diegollorente/multi-docker-react-tests npm run testCI
+
+after_success:
+  - docker build -t diegollorente/multi-docker-nginx ./nginx
+  - docker build -t diegollorente/multi-docker-client ./client
+  - docker build -t diegollorente/multi-docker-api -f ./api
+  - docker build -t diegollorente/multi-docker-worker ./worker
+# Log in the docker cli wiht our credentials
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take images and push to docker
+  - docker push diegollorente/multi-docker-nginx
+  - docker push diegollorente/multi-docker-client
+  - docker push diegollorente/multi-docker-api
+  - docker push diegollorente/multi-docker-worker
