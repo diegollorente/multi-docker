@@ -29,7 +29,7 @@ deploy:
   provider: elasticbeanstalk
   region: "us-east-2"
   app: "multi-docker"
-  env: "MultiDocker-env"
+  env: "MultiDocker-env-1"
   #S3 instance for having access to the persistence
   bucket_name: "elasticbeanstalk-us-east-2-786178166797"
   bucket_path: "multi-docker"
