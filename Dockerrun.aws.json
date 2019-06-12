@@ -5,19 +5,22 @@
             "name": "client",
             "image": "diegollorente/multi-docker-client",
             "hostname": "client",
-            "essential": false
+            "essential": false,
+            "memory": 128
         },
         {
             "name": "api",
             "image": "diegollorente/multi-docker-api",
             "hostname": "api",
-            "essential": false
+            "essential": false,
+            "memory": 128
         },
         {
             "name": "worker",
             "image": "diegollorente/multi-docker-worker",
             "hostname": "worker",
-            "essential": false
+            "essential": false,
+            "memory": 128
         },
         {
             "name": "nginx",
@@ -30,7 +33,8 @@
                     "containerPort": 80
                 }
             ],
-            "links": ["client", "api"]
+            "links": ["client", "api"],
+            "memory": 128
         }
     ]
 }
