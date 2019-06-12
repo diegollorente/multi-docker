@@ -29,7 +29,7 @@ pgClient
   .query('CREATE TABLE IF NOT EXISTS values (total INT)')
   .catch(err => console.log(err));
 
-
+/*
 //MariaDB Client Setup
 const mariadb = require('mariadb');
 const mariaDBClient = mariadb.createPool({
@@ -40,7 +40,7 @@ const mariaDBClient = mariadb.createPool({
   database: keys.mariaDBDatabase,
   connectionLimit: keys.mariaDBConnectionLimit
 });
- 
+
 async function asyncFunction() {
   let mariaDBConn;
   try {
@@ -59,7 +59,7 @@ async function asyncFunction() {
 }
 //Llamamos a la inicializacion de la bbdd
 asyncFunction();
-
+*/
 
 // Redis Client Setup
 const redis = require('redis');
@@ -92,13 +92,13 @@ async function getAllValues() {
 
 
 
-app.get('/values/all', async (req, res) => {
+app.get('/values/all2', async (req, res) => {
   const values = await getAllValues();
 
   res.send(values.rows);
 });
 
-app.get('/values/all2', async (req, res) => {
+app.get('/values/all', async (req, res) => {
   const values = await pgClient.query('SELECT * from fib');
 
   res.send(values.rows);
@@ -126,7 +126,7 @@ async function insertValue(index) {
 }
 
 
-app.post('/values', async (req, res) => {
+app.post('/values2', async (req, res) => {
   const index = parseInt(req.body.index);
   
   if (index > 2000000) {
@@ -140,7 +140,7 @@ app.post('/values', async (req, res) => {
   res.send({ working: true });
 });
 
-app.post('/values2', async (req, res) => {
+app.post('/values', async (req, res) => {
   const index = parseInt(req.body.index);
   
   if (index > 2000000) {
